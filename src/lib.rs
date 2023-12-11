@@ -48,7 +48,7 @@ impl<SpiE: Display> Display for Error<SpiE> {
 impl<SpiE: Display + core::fmt::Debug> std::error::Error for Error<SpiE> {}
 
 /// High level API for interacting with the CC1101 radio chip.
-pub struct Cc1101<SPI>(lowlevel::Cc1101<SPI>);
+pub struct Cc1101<SPI>(pub lowlevel::Cc1101<SPI>);
 
 impl<SPI, SpiE> Cc1101<SPI>
 where
@@ -269,7 +269,7 @@ where
         Ok(())
     }
 
-    fn await_machine_state(&mut self, target: MachineState) -> Result<(), Error<SpiE>> {
+    pub fn await_machine_state(&mut self, target: MachineState) -> Result<(), Error<SpiE>> {
         loop {
             let marcstate = MARCSTATE(self.0.read_register(Status::MARCSTATE)?);
             if target.value() == marcstate.marc_state() {
