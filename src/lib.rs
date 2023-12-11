@@ -80,7 +80,7 @@ impl<SpiE: Display> Display for Error<SpiE> {
 impl<SpiE: Display + core::fmt::Debug> std::error::Error for Error<SpiE> {}
 
 /// High level API for interacting with the CC1101 radio chip.
-pub struct Cc1101<SPI>(lowlevel::Cc1101<SPI>);
+pub struct Cc1101<SPI>(pub lowlevel::Cc1101<SPI>);
 
 impl<SPI, SpiE> Cc1101<SPI>
 where
@@ -668,7 +668,7 @@ where
     /// 5.  set_raw_mode() was written with specific application in mind
     /// ------------------------------------------------------------------------
 
-    fn await_machine_state(&mut self, target_state: MachineState) -> Result<(), Error<SpiE>> {
+    pub fn await_machine_state(&mut self, target_state: MachineState) -> Result<(), Error<SpiE>> {
         loop {
             let machine_state = self.get_machine_state()?;
             if target_state == machine_state {
