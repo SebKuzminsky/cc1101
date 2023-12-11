@@ -105,6 +105,16 @@ where
         Ok(())
     }
 
+    pub fn write_register_burst<R>(&mut self, reg: R, byte_array: &[u8]) -> Result<(), SpiE>
+    where
+        R: Into<Register>,
+    {
+        self.spi.transaction(&mut [
+            Operation::Write(&[reg.into().waddr(access::Mode::Burst)]),
+            Operation::Write(byte_array),
+        ])
+    }
+
     pub fn modify_register<R, F>(&mut self, reg: R, f: F) -> Result<(), SpiE>
     where
         R: Into<Register> + Copy,
