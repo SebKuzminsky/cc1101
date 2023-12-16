@@ -702,6 +702,11 @@ where
         self.await_machine_state(target)
     }
 
+    pub fn write_patable(&mut self, patable_values: &[u8]) -> Result<(), Error<SpiE>> {
+        self.0.write_register_burst(MultiByte::PATABLE, patable_values)?;
+        Ok(())
+    }
+
     fn rx_bytes_available(&mut self) -> Result<u8, Error<SpiE>> {
         let mut last = 0;
 
