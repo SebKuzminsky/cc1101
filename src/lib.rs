@@ -262,6 +262,35 @@ where
         Ok(())
     }
 
+    /// Sets the FIFOTHR (FIFO Threshold) register.
+    ///
+    /// `adc_retention` controls what configuration is retained when
+    /// the chip comes out of Sleep mode, set to 0 if you reconfigure
+    /// the chip manually after sleep.
+    ///
+    /// `close_in_rx` is normally 0 but can be adjusted to work around
+    /// signal quality issues when the transmitter and receiver are very
+    /// close to each other.  See Design Note DN010 "Close-in Reception
+    /// with CC1101" (swra147.pdf) for details.
+    ///
+    /// `fifo_thr` controls the threshold of bytes in the RX and TX FIFOs.
+    pub fn set_fifo_threshold(
+        &mut self,
+        adc_retention: bool,
+        close_in_rx: u8,
+        fifo_thr: FifoThreshold,
+    ) -> Result<(), Error<SpiE>> {
+        self.0.write_register(
+            Config::FIFOTHR,
+            FIFOTHR::default()
+                .adc_retention(adc_retention as u8)
+                .close_in_rx(close_in_rx)
+                .fifo_thr(fifo_thr.into())
+                .bits(),
+        )?;
+        Ok(())
+    }
+
     /// Sets the carrier frequency (in Hertz).
     pub fn set_frequency(&mut self, hz: u64) -> Result<(), Error<SpiE>> {
         // Before altering any frequency programming register we
