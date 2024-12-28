@@ -686,7 +686,7 @@ where
             RadioMode::Calibrate => {
                 self.set_radio_mode(RadioMode::Idle)?;
                 self.cal_freq_synth_and_turn_off()?;
-                MachineState::MANCAL
+                MachineState::IDLE
             }
             RadioMode::Transmit => {
                 self.set_radio_mode(RadioMode::Idle)?;
