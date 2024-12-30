@@ -38,7 +38,7 @@ impl From<u8> for State {
 }
 
 /// Table 23: Status Byte
-#[derive(Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct StatusByte {
     pub chip_rdy: bool,
     pub state: State,
